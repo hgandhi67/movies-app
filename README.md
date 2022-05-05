@@ -5,9 +5,9 @@ Following are the functionality added in the application :
 1. Dashboard : It loads all the popular tv shows and provides the functionality like search and add/remove shows from favourite.
 2. Favourite : It shows all the tv shows added to favourite.
 
-# Apis from https://developers.themoviedb.org/3/getting-started/introduction are used for listing the data.
+-> Apis from https://developers.themoviedb.org/3/getting-started/introduction are used for listing the data.
 
-# Hive local database have been used to store the data locally.
+-> Hive local database have been used to store the data locally.
 
 Please check the following gifs for the app functionality : 
 1. Dashboard data fetching : 
