@@ -1,6 +1,6 @@
 class ApiEndpoints {
   /// Api key used for the api calls in the application
-  static const String apiKey = '4b362574a245356411cd7a6a115441d0';
+  static const String apiKey = '';
 
   /// Base URL for the api parts.
   static const String baseUrlProd = 'https://api.themoviedb.org/3';
