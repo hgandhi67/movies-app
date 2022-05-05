@@ -6,8 +6,9 @@ import 'package:movies_app/model/tv_shows_response_model.dart';
 
 class TvShowItemWidget extends StatefulWidget {
   final Result result;
+  final bool showFav;
 
-  const TvShowItemWidget({Key? key, required this.result}) : super(key: key);
+  const TvShowItemWidget({Key? key, required this.result, this.showFav = true}) : super(key: key);
 
   @override
   _TvShowItemWidgetState createState() => _TvShowItemWidgetState();
@@ -92,38 +93,45 @@ class _TvShowItemWidgetState extends State<TvShowItemWidget> {
               ),
             ),
           ),
-          SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-          InkWell(
-            splashColor: Colors.transparent,
-            onTap: () => addToFavourite(),
-            child: const Icon(Icons.favorite_border, size: 22.0, color: Colors.orangeAccent),
-          ),
+          if (widget.showFav) ...[
+            SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+            InkWell(
+              splashColor: Colors.transparent,
+              onTap: () => addRemoveFromFavourite(),
+              child: Icon(isFav ? Icons.favorite : Icons.favorite_border, size: 22.0, color: Colors.orangeAccent),
+            ),
+          ],
         ],
       ),
     );
   }
 
   void checkExistence() async {
-    final box = await Hive.openBox<TvShowsDbModel>('ShowsDB');
+    final box = await Hive.openBox<TvShowsDbModel>(ApiEndpoints.databaseName);
     List<TvShowsDbModel> dbList = box.values.toList().isNotEmpty == true ? box.values.toList() : [];
-    List<TvShowsDbModel> check = dbList.where((element) => element.tvShowsList?.id == widget.result.id).toList();
+    List<TvShowsDbModel> check = dbList.where((element) => element.id == widget.result.id).toList();
 
     setState(() {
       isFav = check.isNotEmpty;
     });
   }
 
-  void addToFavourite() async {
-    final box = Hive.box<TvShowsDbModel>('ShowsDB');
+  void addRemoveFromFavourite() async {
+    final box = Hive.box<TvShowsDbModel>(ApiEndpoints.databaseName);
     List<TvShowsDbModel> dbList = box.values.toList().isNotEmpty == true ? box.values.toList() : [];
-    int check = dbList.indexWhere((element) => element.tvShowsList?.id == widget.result.id);
+    int check = dbList.indexWhere((element) => element.id == widget.result.id);
 
     if (check == -1) {
-      TvShowsDbModel tvShowsDbModel = TvShowsDbModel()..tvShowsList = widget.result;
-      Hive.box<TvShowsDbModel>('ShowsDB').add(tvShowsDbModel);
-      // box.add(tvShowsDbModel);
+      TvShowsDbModel tvShowsDbModel = TvShowsDbModel()
+        ..id = widget.result.id
+        ..name = widget.result.name
+        ..overview = widget.result.overview
+        ..posterPath = widget.result.posterPath;
+      box.add(tvShowsDbModel);
+      checkExistence();
     } else {
       box.deleteAt(check);
+      checkExistence();
     }
   }
 }

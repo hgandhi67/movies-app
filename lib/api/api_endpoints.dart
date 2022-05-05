@@ -13,4 +13,7 @@ class ApiEndpoints {
 
   /// Url for the search of popular tv shows
   static const String searchTvShows = '/search/tv?language=en-US&page=1&include_adult=false&api_key=$apiKey&query=';
+
+  /// Constants
+  static const String databaseName = 'ShowsDB';
 }

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:movies_app/model/tv_shows_response_model.dart';
 import 'package:movies_app/src/api_provider.dart';
-import 'package:movies_app/src/loading_widget.dart';
-import 'package:movies_app/src/tv_show_item_widget.dart';
+import 'package:movies_app/src/favouritepage.dart';
+import 'package:movies_app/widget/loading_widget.dart';
+import 'package:movies_app/widget/tv_show_item_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -28,7 +29,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Movies App'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Movies App'),
+        centerTitle: true,
+        actions: [_favouriteIconWidget()],
+      ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
         child: Stack(
@@ -63,11 +68,11 @@ class _HomePageState extends State<HomePage> {
       physics: const BouncingScrollPhysics(),
       width: MediaQuery.of(context).size.width * 0.9,
       debounceDelay: const Duration(milliseconds: 200),
-      onSubmitted: (query){
+      onSubmitted: (query) {
         fetchTvShows(searchQuery: query);
       },
-      onQueryChanged: (query){
-        if(query == ''){
+      onQueryChanged: (query) {
+        if (query == '') {
           fetchTvShows();
         }
       },
@@ -93,6 +98,19 @@ class _HomePageState extends State<HomePage> {
       itemBuilder: (context, index) {
         return TvShowItemWidget(result: tvShowsList[index]);
       },
+    );
+  }
+
+  /// Widget function which gives the ui for the favourite icon along with tap event
+  Widget _favouriteIconWidget() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const FavouritePage())),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        child: const Icon(Icons.favorite, size: 20.0, color: Colors.white),
+      ),
     );
   }
 

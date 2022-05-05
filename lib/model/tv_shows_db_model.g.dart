@@ -16,15 +16,25 @@ class TvShowsDbModelAdapter extends TypeAdapter<TvShowsDbModel> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return TvShowsDbModel()..tvShowsList = fields[0] as Result?;
+    return TvShowsDbModel()
+      ..id = fields[0] as int?
+      ..name = fields[1] as String?
+      ..overview = fields[2] as String?
+      ..posterPath = fields[3] as String?;
   }
 
   @override
   void write(BinaryWriter writer, TvShowsDbModel obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.tvShowsList);
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.overview)
+      ..writeByte(3)
+      ..write(obj.posterPath);
   }
 
   @override

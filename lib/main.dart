@@ -6,19 +6,6 @@ import 'package:movies_app/src/homepage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Hive setup
-  // if (!kIsWeb) {
-  //   print("Initiating mobile ----");
-  //   final dbDir = await getApplicationDocumentsDirectory();
-  //   Hive
-  //     ..init(dbDir.path)
-  //     ..registerAdapter(TvShowsDbModelAdapter());
-  // } else {
-  //   /// init hive storage
-  //   await Hive.initFlutter();
-  //   Hive.registerAdapter(TvShowsDbModelAdapter());
-  // }
-
   /// init hive storage
   await Hive.initFlutter();
 
@@ -34,9 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Movies App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
+      debugShowCheckedModeBanner: false,
       home: const HomePage(),
     );
   }
